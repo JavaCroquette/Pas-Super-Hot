@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private float speed = 200f;
     [SerializeField] private float dashForce = 0f;
     [SerializeField] private float gravityForce = 9.81f;
     [SerializeField] private float flyDelay = 1f;
@@ -36,10 +37,16 @@ public class Player : MonoBehaviour
         playerTransform.Rotate(0f,
             Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime,
             0f);
-        if (Physics.OverlapSphere(feet.transform.position, .5f, groundLayer).Length > 0)
+        if (Physics.OverlapSphere(feet.transform.position, 1f, groundLayer).Length > 0)
             isGrounded = true;
         else
             isGrounded = false;
+        if (isGrounded)
+        {
+            Vector3 newVelocity = speed * Time.deltaTime * (transform.right * Input.GetAxis("Horizontal") + transform.forward * Input.GetAxis("Vertical"));
+            if (!newVelocity.Equals(Vector3.zero))
+                rb.velocity = newVelocity;
+        }
     }
 
     public void Dash(Vector3 dir)
@@ -63,10 +70,12 @@ public class Player : MonoBehaviour
         {
             ContactPoint contactPoint = collision.GetContact(0);
             rb.velocity = Vector3.zero;
-            playerTransform.position = contactPoint.point - contactPoint.normal * feet.transform.localPosition.y;
-            playerTransform.rotation = Quaternion.Euler(collision.transform.rotation.eulerAngles + Vector3.right * 0); // BUG TO RESOLVE HERE
+            playerTransform.position = contactPoint.point - contactPoint.normal * feet.transform.localPosition.y; 
+            float switchDir = (Vector3.Angle(collision.collider.transform.up, playerTransform.position - contactPoint.point) < 90) ? 0 : 180; // Depends on the normal
+            playerTransform.rotation = Quaternion.Euler(collision.transform.rotation.eulerAngles + Vector3.forward * switchDir);
         }
     }
+
 
     private IEnumerator ResetUseGravity(float delay)
     {
@@ -76,6 +85,6 @@ public class Player : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(feet.transform.position, .1f);
+        Gizmos.DrawWireSphere(feet.transform.position, 1f);
     }
 }
