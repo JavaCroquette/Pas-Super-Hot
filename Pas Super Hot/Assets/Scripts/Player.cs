@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     private bool isGrounded = true;
     private bool useGravity = true;
     private bool hasPowers = true;
-
+    private bool isDashing = false;
 
     private void FixedUpdate()
     {
@@ -56,7 +56,10 @@ public class Player : MonoBehaviour
 
         rb.AddForce(dir * dashForce, ForceMode.Impulse);
         useGravity = false;
+        isDashing = true;
+
         StartCoroutine(nameof(ResetUseGravity), flyDelay);
+        StartCoroutine(nameof(ResetIsDashing), 0.1f);
     }
 
     public void LosePowers()
@@ -70,17 +73,24 @@ public class Player : MonoBehaviour
         {
             ContactPoint contactPoint = collision.GetContact(0);
             rb.velocity = Vector3.zero;
-            playerTransform.position = contactPoint.point - contactPoint.normal * feet.transform.localPosition.y; 
-            float switchDir = (Vector3.Angle(collision.collider.transform.up, playerTransform.position - contactPoint.point) < 90) ? 0 : 180; // Depends on the normal
-            playerTransform.rotation = Quaternion.Euler(collision.transform.rotation.eulerAngles + Vector3.forward * switchDir);
+            playerTransform.position = contactPoint.point - contactPoint.normal * feet.transform.localPosition.y;
+            playerTransform.rotation = Quaternion.LookRotation(contactPoint.normal);
+            playerTransform.Rotate(Vector3.right * 90f);
+            playerTransform.SetParent(collision.transform);
+            Vector3 parentScale = collision.transform.localScale;
+            playerTransform.localScale = new Vector3(1/parentScale.x, 1/parentScale.y, 1/parentScale.z);
         }
     }
-
 
     private IEnumerator ResetUseGravity(float delay)
     {
         yield return new WaitForSeconds(delay);
         useGravity = true;
+    }
+    private IEnumerator ResetIsDashing(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        isDashing = false;
     }
 
     private void OnDrawGizmos()
