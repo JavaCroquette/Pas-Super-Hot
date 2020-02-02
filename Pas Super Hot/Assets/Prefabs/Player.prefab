@@ -260,12 +260,17 @@ MonoBehaviour:
   dashForce: 30
   gravityForce: 1255.68
   flyDelay: 1
+  turnDistance: 10
+  multiplierAnimHigh: 0.1
+  multiplierAnimMid: 0.04
+  multiplierAnimLow: 0.01
   rb: {fileID: 5229702776070731821}
   playerTransform: {fileID: 5229702776070731818}
+  camTransform: {fileID: 5229702775366164364}
   feet: {fileID: 5229702775859474348}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 4294967295
   rotationSpeed: 50
 --- !u!54 &5229702776070731821
 Rigidbody:
