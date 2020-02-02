@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
                 forwardCam = rb.velocity.normalized;
             }
         }
-        Debug.Log(multiplierAnim);
+        //Debug.Log(multiplierAnim);
         ChangeAnimationSpeed();
     }
 

@@ -6,9 +6,9 @@ public class MenuScript : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public void Play()
+    public void Play(string playSceneName)
     {
-        SceneManager.LoadScene("PlayTestScene");
+        SceneManager.LoadScene(playSceneName);
     }
 
     public void Quit()

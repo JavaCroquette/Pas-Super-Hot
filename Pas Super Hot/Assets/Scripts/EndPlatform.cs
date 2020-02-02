@@ -49,6 +49,7 @@ public class EndPlatform : MonoBehaviour
 
     private void Win()
     {
+        FindObjectOfType<Winscript>().Win();
         Debug.Log("Vous avez gagné !");
     }
 }

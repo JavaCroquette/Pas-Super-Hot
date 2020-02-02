@@ -13,7 +13,7 @@ public class Breakbackgroundscript : MonoBehaviour
     public void restart()
     {
         pausePanel.SetActive(false);
-        SceneManager.LoadScene("PlayTestScene");
+        SceneManager.LoadScene("Merge1");
         Time.timeScale = 1;
     }
 
