@@ -11,6 +11,8 @@ public class CamController : MonoBehaviour
 
     private void Awake()
     {
+        if (camTransform == default)
+            camTransform = GetComponent<Transform>();
         rotationSpeed = player.rotationSpeed;
     }
     private float xRotation = 0f;
@@ -31,7 +33,7 @@ public class CamController : MonoBehaviour
         if (xRotation >= 270f)
             xRotation -= 360f;
         camTransform.localRotation = Quaternion.Euler(Mathf.Clamp(xRotation - Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime, -90f, 90f),
-        0f,
-        0f);
+        camTransform.localRotation.eulerAngles.y,
+        camTransform.localRotation.eulerAngles.z);
     }
 }

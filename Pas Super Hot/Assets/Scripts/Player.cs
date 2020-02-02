@@ -5,25 +5,28 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float speed = 200f;
-    [SerializeField] private float dashForce = 0f;
-    [SerializeField] private float gravityForce = 9.81f;
+    [SerializeField] private float dashForce = 30f;
+    [SerializeField] private float gravityForce = 1255.68f;
     [SerializeField] private float flyDelay = 1f;
+    [SerializeField] private float turnDistance = 10f;
     [SerializeField] private float multiplierAnimHigh = 0.1f;
     [SerializeField] private float multiplierAnimMid = 0.04f;
     [SerializeField] private float multiplierAnimLow = 0.01f;
-
     [SerializeField] private Rigidbody rb = default;
     [SerializeField] private Transform playerTransform = default;
+    [SerializeField] private Transform camTransform = default;
     [SerializeField] private GameObject feet = default;
     [SerializeField] private LayerMask groundLayer = default;
     public float rotationSpeed = 50f;
 
     private float multiplierAnim = 0f;
     private Vector3 gravityDir = Vector3.down;
+    private Vector3 forwardCam = Vector3.zero;
     private bool isGrounded = true;
     private bool useGravity = true;
     private bool hasPowers = true;
     private bool isDashing = false;
+
     private Animator[] animators;
     private bool isMoving = false;
 
@@ -39,14 +42,20 @@ public class Player : MonoBehaviour
             //Debug.Log("isAnim = " + isAnim + (isAnim ? "" : " name" + platform.name));
             if (isAnim) i++;
         }
+
+        if (rb == default)
+            rb = GetComponent<Rigidbody>();
+        if (playerTransform == default)
+            playerTransform = GetComponent<Transform>();
     }
+
     private void FixedUpdate()
     {
         // Apply gravity
         if (useGravity)
         {
             if (isGrounded && hasPowers)
-                rb.AddRelativeForce(Vector3.down * gravityForce * Time.fixedDeltaTime);
+                rb.AddForce(gravityDir * gravityForce * Time.fixedDeltaTime);
             else
                 rb.AddForce(Vector3.down * gravityForce * Time.fixedDeltaTime);
         }
@@ -57,20 +66,32 @@ public class Player : MonoBehaviour
         playerTransform.Rotate(0f,
             Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime,
             0f);
-        if (Physics.OverlapSphere(feet.transform.position, 1f, groundLayer).Length > 0)
+        if (Physics.OverlapSphere(feet.transform.position, .5f, groundLayer).Length > 0)
             isGrounded = true;
         else
             isGrounded = false;
-        if (isGrounded)
+        if (isGrounded && !isDashing)
         {
             Vector3 newVelocity = speed * Time.deltaTime * (transform.right * Input.GetAxis("Horizontal") + transform.forward * Input.GetAxis("Vertical"));
-
-            isMoving = !newVelocity.Equals(Vector3.zero);
-            if (isMoving)
+            if (!newVelocity.Equals(Vector3.zero))
                 rb.velocity = newVelocity;
-
         }
-        Debug.Log(multiplierAnim);
+        if (isDashing)
+        {
+            if (Physics.Raycast(playerTransform.position, forwardCam, out RaycastHit hitinfo, turnDistance))
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(
+                Vector3.RotateTowards(hitinfo.normal, forwardCam, 90f * Mathf.Deg2Rad, 1f),
+                hitinfo.normal);
+
+                playerTransform.rotation = Quaternion.Lerp(playerTransform.rotation, targetRotation, (turnDistance - hitinfo.distance) / turnDistance);
+            }
+            else
+            {
+                forwardCam = rb.velocity.normalized;
+            }
+        }
+        //Debug.Log(multiplierAnim);
         ChangeAnimationSpeed();
     }
 
@@ -107,12 +128,14 @@ public class Player : MonoBehaviour
         if (!isGrounded)
             return;
 
+        forwardCam = camTransform.forward;
+
+        rb.velocity = Vector3.zero;
         rb.AddForce(dir * dashForce, ForceMode.Impulse);
         useGravity = false;
         isDashing = true;
-
         StartCoroutine(nameof(ResetUseGravity), flyDelay);
-        StartCoroutine(nameof(ResetIsDashing), 0.1f);
+        playerTransform.SetParent(null);
     }
 
     public void LosePowers()
@@ -124,44 +147,36 @@ public class Player : MonoBehaviour
     {
         if (collision.collider.CompareTag("Platform"))
         {
+            isDashing = false;
             ContactPoint contactPoint = collision.GetContact(0);
+            gravityDir = - contactPoint.normal;
             rb.velocity = Vector3.zero;
             playerTransform.position = contactPoint.point - contactPoint.normal * feet.transform.localPosition.y;
-            float switchDir = (Vector3.Angle(collision.collider.transform.up, playerTransform.position - contactPoint.point) < 90) ? 0 : 180; // Depends on the normal
-            playerTransform.rotation = Quaternion.Euler(collision.transform.rotation.eulerAngles + Vector3.forward * switchDir);
-            //GameObject emptyObject = new GameObject();
+            playerTransform.rotation = Quaternion.LookRotation(
+                Vector3.RotateTowards(contactPoint.normal, forwardCam, 90f * Mathf.Deg2Rad, 1f), 
+                contactPoint.normal);
+            
             playerTransform.SetParent(collision.transform);
             Vector3 parentScale = collision.transform.localScale;
             playerTransform.localScale = new Vector3(1 / parentScale.x, 1 / parentScale.y, 1 / parentScale.z);
+
+            forwardCam = Vector3.zero;
         }
     }
 
-    //private void OnCollisionStay(Collision collision)
-    //{
-    //    if (!isDashing)
-    //    {
-    //        if (collision.collider.CompareTag("Platform"))
-    //        {
-    //            ContactPoint contactPoint = collision.GetContact(0);
-    //            float difference = Vector3.Angle(contactPoint.normal, playerTransform.up);
-    //            playerTransform.Rotate(Vector3.forward * difference);
-    //        }
-    //    }
-    //}
+    private void OnCollisionStay(Collision collision)
+    {
+        gravityDir = -collision.GetContact(0).normal;
+    }
 
     private IEnumerator ResetUseGravity(float delay)
     {
         yield return new WaitForSeconds(delay);
         useGravity = true;
     }
-    private IEnumerator ResetIsDashing(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        isDashing = false;
-    }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(feet.transform.position, 1f);
+        Gizmos.DrawWireSphere(feet.transform.position, .5f);
     }
 }
