@@ -22,13 +22,13 @@ public class Player : MonoBehaviour
     private float multiplierAnim = 0f;
     private Vector3 gravityDir = Vector3.down;
     private Vector3 forwardCam = Vector3.zero;
-    private bool isGrounded = true;
+    [SerializeField] private bool isGrounded = true;
     private bool useGravity = true;
     private bool hasPowers = true;
-    private bool isDashing = false;
+    [SerializeField] private bool isDashing = false;
 
     private Animator[] animators;
-    private bool isMoving = false;
+    [SerializeField] private bool isMoving = false;
 
     private void Awake()
     {
@@ -66,15 +66,15 @@ public class Player : MonoBehaviour
         playerTransform.Rotate(0f,
             Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime,
             0f);
-        if (Physics.OverlapSphere(feet.transform.position, .5f, groundLayer).Length > 0)
-            isGrounded = true;
-        else
-            isGrounded = false;
+        isGrounded = Physics.OverlapSphere(feet.transform.position, .5f, groundLayer).Length > 0;
         if (isGrounded && !isDashing)
         {
             Vector3 newVelocity = speed * Time.deltaTime * (transform.right * Input.GetAxis("Horizontal") + transform.forward * Input.GetAxis("Vertical"));
-            if (!newVelocity.Equals(Vector3.zero))
+            isMoving = !newVelocity.Equals(Vector3.zero);
+            if (isMoving)
+            {
                 rb.velocity = newVelocity;
+            }
         }
         if (isDashing)
         {
@@ -91,7 +91,7 @@ public class Player : MonoBehaviour
                 forwardCam = rb.velocity.normalized;
             }
         }
-        //Debug.Log(multiplierAnim);
+        Debug.Log(multiplierAnim);
         ChangeAnimationSpeed();
     }
 
@@ -149,13 +149,13 @@ public class Player : MonoBehaviour
         {
             isDashing = false;
             ContactPoint contactPoint = collision.GetContact(0);
-            gravityDir = - contactPoint.normal;
+            gravityDir = -contactPoint.normal;
             rb.velocity = Vector3.zero;
             playerTransform.position = contactPoint.point - contactPoint.normal * feet.transform.localPosition.y;
             playerTransform.rotation = Quaternion.LookRotation(
-                Vector3.RotateTowards(contactPoint.normal, forwardCam, 90f * Mathf.Deg2Rad, 1f), 
+                Vector3.RotateTowards(contactPoint.normal, forwardCam, 90f * Mathf.Deg2Rad, 1f),
                 contactPoint.normal);
-            
+
             playerTransform.SetParent(collision.transform);
             Vector3 parentScale = collision.transform.localScale;
             playerTransform.localScale = new Vector3(1 / parentScale.x, 1 / parentScale.y, 1 / parentScale.z);
