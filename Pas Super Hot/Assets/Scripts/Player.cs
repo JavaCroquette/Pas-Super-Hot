@@ -5,10 +5,10 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float speed = 200f;
-    [SerializeField] private float dashForce = 0f;
-    [SerializeField] private float gravityForce = 9.81f;
+    [SerializeField] private float dashForce = 30f;
+    [SerializeField] private float gravityForce = 1255.68f;
     [SerializeField] private float flyDelay = 1f;
-    [SerializeField] private float turnDistance = 5f;
+    [SerializeField] private float turnDistance = 10f;
     [SerializeField] private Rigidbody rb = default;
     [SerializeField] private Transform playerTransform = default;
     [SerializeField] private Transform camTransform = default;
@@ -23,6 +23,13 @@ public class Player : MonoBehaviour
     private bool hasPowers = true;
     private bool isDashing = false;
 
+    private void Awake()
+    {
+        if (rb == default)
+            rb = GetComponent<Rigidbody>();
+        if (playerTransform == default)
+            playerTransform = GetComponent<Transform>();
+    }
     private void FixedUpdate()
     {
         // Apply gravity

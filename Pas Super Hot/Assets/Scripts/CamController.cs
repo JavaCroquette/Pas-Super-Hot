@@ -11,6 +11,8 @@ public class CamController : MonoBehaviour
 
     private void Awake()
     {
+        if (camTransform == default)
+            camTransform = GetComponent<Transform>();
         rotationSpeed = player.rotationSpeed;
     }
     private float xRotation = 0f;
