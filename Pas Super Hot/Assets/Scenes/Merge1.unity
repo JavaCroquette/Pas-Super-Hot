@@ -141,7 +141,7 @@ PrefabInstance:
     - target: {fileID: 5229702776070731818, guid: 14ff5a5417654234c9cc43afc9c96f05,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.55
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5229702776070731818, guid: 14ff5a5417654234c9cc43afc9c96f05,
         type: 3}
@@ -151,7 +151,7 @@ PrefabInstance:
     - target: {fileID: 5229702776070731818, guid: 14ff5a5417654234c9cc43afc9c96f05,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.31
+      value: -32.7
       objectReference: {fileID: 0}
     - target: {fileID: 5229702776070731818, guid: 14ff5a5417654234c9cc43afc9c96f05,
         type: 3}
@@ -197,6 +197,21 @@ PrefabInstance:
         type: 3}
       propertyPath: groundLayer.m_Bits
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 5229702776070731819, guid: 14ff5a5417654234c9cc43afc9c96f05,
+        type: 3}
+      propertyPath: multiplierAnimLow
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5229702776070731819, guid: 14ff5a5417654234c9cc43afc9c96f05,
+        type: 3}
+      propertyPath: multiplierAnimHigh
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 5229702776070731819, guid: 14ff5a5417654234c9cc43afc9c96f05,
+        type: 3}
+      propertyPath: multiplierAnimMid
+      value: 0.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14ff5a5417654234c9cc43afc9c96f05, type: 3}
