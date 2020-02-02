@@ -1,4 +1,4 @@
-# Pas-Super-Hot
+# Reverse
 
 Reverse is a 3D based first person platform game where you climb a shattered building by jumping from rubble to rubble while the building is reversed to its original state in a few seconds.
 
