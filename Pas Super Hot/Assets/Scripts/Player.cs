@@ -8,13 +8,16 @@ public class Player : MonoBehaviour
     [SerializeField] private float dashForce = 0f;
     [SerializeField] private float gravityForce = 9.81f;
     [SerializeField] private float flyDelay = 1f;
+    [SerializeField] private float turnDistance = 5f;
     [SerializeField] private Rigidbody rb = default;
     [SerializeField] private Transform playerTransform = default;
+    [SerializeField] private Transform camTransform = default;
     [SerializeField] private GameObject feet = default;
     [SerializeField] private LayerMask groundLayer = default;
     public float rotationSpeed = 50f;
 
     private Vector3 gravityDir = Vector3.down;
+    private Vector3 forwardCam = Vector3.zero;
     private bool isGrounded = true;
     private bool useGravity = true;
     private bool hasPowers = true;
@@ -26,7 +29,7 @@ public class Player : MonoBehaviour
         if (useGravity)
         {
             if (isGrounded && hasPowers)
-                rb.AddRelativeForce(Vector3.down * gravityForce * Time.fixedDeltaTime);
+                rb.AddForce(gravityDir * gravityForce * Time.fixedDeltaTime);
             else
                 rb.AddForce(Vector3.down * gravityForce * Time.fixedDeltaTime);
         }
@@ -37,15 +40,30 @@ public class Player : MonoBehaviour
         playerTransform.Rotate(0f,
             Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime,
             0f);
-        if (Physics.OverlapSphere(feet.transform.position, 1f, groundLayer).Length > 0)
+        if (Physics.OverlapSphere(feet.transform.position, .5f, groundLayer).Length > 0)
             isGrounded = true;
         else
             isGrounded = false;
-        if (isGrounded)
+        if (isGrounded && !isDashing)
         {
             Vector3 newVelocity = speed * Time.deltaTime * (transform.right * Input.GetAxis("Horizontal") + transform.forward * Input.GetAxis("Vertical"));
             if (!newVelocity.Equals(Vector3.zero))
                 rb.velocity = newVelocity;
+        }
+        if (isDashing)
+        {
+            if (Physics.Raycast(playerTransform.position, forwardCam, out RaycastHit hitinfo, turnDistance))
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(
+                Vector3.RotateTowards(hitinfo.normal, forwardCam, 90f * Mathf.Deg2Rad, 1f),
+                hitinfo.normal);
+
+                playerTransform.rotation = Quaternion.Lerp(playerTransform.rotation, targetRotation, (turnDistance - hitinfo.distance) / turnDistance);
+            }
+            else
+            {
+                forwardCam = rb.velocity.normalized;
+            }
         }
     }
 
@@ -54,12 +72,13 @@ public class Player : MonoBehaviour
         if (!isGrounded)
             return;
 
+        forwardCam = camTransform.forward;
+
+        rb.velocity = Vector3.zero;
         rb.AddForce(dir * dashForce, ForceMode.Impulse);
         useGravity = false;
         isDashing = true;
-
         StartCoroutine(nameof(ResetUseGravity), flyDelay);
-        StartCoroutine(nameof(ResetIsDashing), 0.1f);
     }
 
     public void LosePowers()
@@ -71,15 +90,26 @@ public class Player : MonoBehaviour
     {
         if (collision.collider.CompareTag("Platform"))
         {
+            isDashing = false;
             ContactPoint contactPoint = collision.GetContact(0);
+            gravityDir = - contactPoint.normal;
             rb.velocity = Vector3.zero;
             playerTransform.position = contactPoint.point - contactPoint.normal * feet.transform.localPosition.y;
-            playerTransform.rotation = Quaternion.LookRotation(contactPoint.normal);
-            playerTransform.Rotate(Vector3.right * 90f);
+            playerTransform.rotation = Quaternion.LookRotation(
+                Vector3.RotateTowards(contactPoint.normal, forwardCam, 90f * Mathf.Deg2Rad, 1f), 
+                contactPoint.normal);
+            
             playerTransform.SetParent(collision.transform);
             Vector3 parentScale = collision.transform.localScale;
-            playerTransform.localScale = new Vector3(1/parentScale.x, 1/parentScale.y, 1/parentScale.z);
+            playerTransform.localScale = new Vector3(1 / parentScale.x, 1 / parentScale.y, 1 / parentScale.z);
+
+            forwardCam = Vector3.zero;
         }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        gravityDir = -collision.GetContact(0).normal;
     }
 
     private IEnumerator ResetUseGravity(float delay)
@@ -87,14 +117,9 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(delay);
         useGravity = true;
     }
-    private IEnumerator ResetIsDashing(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        isDashing = false;
-    }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(feet.transform.position, 1f);
+        Gizmos.DrawWireSphere(feet.transform.position, .5f);
     }
 }
