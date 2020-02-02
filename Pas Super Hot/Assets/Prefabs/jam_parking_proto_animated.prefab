@@ -9189,6 +9189,7 @@ GameObject:
   - component: {fileID: 8794709121088901018}
   - component: {fileID: 8794709121088901019}
   - component: {fileID: 2555043893344311136}
+  - component: {fileID: 4905953136228209077}
   m_Layer: 0
   m_Name: sol etage 1.002_cell.004
   m_TagString: Platform
@@ -9306,6 +9307,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4905953136228209077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2555043893344311137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e11c62834c321744389d0a08e7122f41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platformTransform: {fileID: 7335221625633997258}
+  material: {fileID: 2100000, guid: 4dbfdadf14e00344f84af1c0435d4866, type: 2}
+  color1: {r: 1, g: 0.904619, b: 0, a: 1}
+  color2: {r: 1, g: 0, b: 0.07585335, a: 1}
+  timeAnim: 1
+  arrow: {fileID: 0}
 --- !u!1 &2711426164066382407
 GameObject:
   m_ObjectHideFlags: 0
