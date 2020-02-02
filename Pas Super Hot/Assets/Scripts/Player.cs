@@ -86,6 +86,7 @@ public class Player : MonoBehaviour
         useGravity = false;
         isDashing = true;
         StartCoroutine(nameof(ResetUseGravity), flyDelay);
+        playerTransform.SetParent(null);
     }
 
     public void LosePowers()
