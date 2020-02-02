@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform camTransform = default;
     [SerializeField] private GameObject feet = default;
     [SerializeField] private LayerMask groundLayer = default;
+
+    [SerializeField] private AudioSource jump1, jump2;
     public float rotationSpeed = 50f;
 
     private float multiplierAnim = 0f;
@@ -129,7 +131,8 @@ public class Player : MonoBehaviour
             return;
 
         forwardCam = camTransform.forward;
-
+        jump1.Play();
+        jump2.Play();
         rb.velocity = Vector3.zero;
         rb.AddForce(dir * dashForce, ForceMode.Impulse);
         useGravity = false;
