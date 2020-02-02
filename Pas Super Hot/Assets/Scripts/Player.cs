@@ -35,13 +35,14 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         GameObject[] platforms = GameObject.FindGameObjectsWithTag("Platform");
-        //Debug.Log(platforms.Length);
-        animators = new Animator[platforms.Length - 4];//-4 is for 4 walls
+        Debug.Log(platforms.Length);
+        animators = new Animator[platforms.Length - 5];//-4 is for 4 walls
         int i = 0;
         foreach (GameObject platform in platforms)
         {
+            if (i >= platforms.Length - 5) break;
             bool isAnim = platform.TryGetComponent<Animator>(out animators[i]);
-            //Debug.Log("isAnim = " + isAnim + (isAnim ? "" : " name" + platform.name));
+            Debug.Log("isAnim = " + isAnim + (isAnim ? "" : " name" + platform.name));
             if (isAnim) i++;
         }
 

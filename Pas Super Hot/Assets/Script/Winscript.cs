@@ -11,18 +11,5 @@ public class Winscript : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         winPanel.SetActive(true);
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetButtonDown("Fire3"))
-        {
-            Win();
-        }
-    }
 }
