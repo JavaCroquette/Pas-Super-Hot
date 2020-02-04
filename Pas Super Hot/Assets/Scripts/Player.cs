@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject feet = default;
     [SerializeField] private LayerMask groundLayer = default;
 
-    [SerializeField] private AudioSource jump1, jump2;
+    [SerializeField] private AudioSource jump1 = default, jump2 = default;
     public float rotationSpeed = 50f;
 
     private float multiplierAnim = 0f;

@@ -1,45 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PauseManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    [SerializeField] private GameObject pausePanel;
-    
-    private bool is_paused;
-    public void pause()
-    {
-        if (is_paused)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            is_paused = false;
-            pausePanel.SetActive(false);
-            Time.timeScale = 1;
-            return;
-        }
-        Time.timeScale = 0;
-        is_paused = true;
-        pausePanel.SetActive(true);
-        Cursor.lockState = CursorLockMode.None;
-        return;
-    }
+    [SerializeField] private GameObject pausePanel = default;
 
-    public void resume()
-    {
-        pause();
-    }
-    void Start()
-    {
-        
-    }
+    private bool is_paused = false;
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            pause();
+            Pause();
         }
+    }
+
+    private void Pause()
+    {
+        if (is_paused)
+        {
+            is_paused = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            pausePanel.SetActive(false);
+            Time.timeScale = 1f;
+            return;
+        }
+        Time.timeScale = 0;
+        pausePanel.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        is_paused = true;
+        return;
     }
 }

@@ -1,45 +1,51 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Animations;
-using System.IO;
+#endif
 
 public class AddAnimationController : MonoBehaviour
 {
     public int ID = 0;
+    public AnimationClip clip = default;
+#if UNITY_EDITOR
+
     public void SetAnimators()
     {
         //animators = GetComponentInChildren<Animator>();
         foreach (Transform brique in transform)//buildingBase
         {
-            ////Debug.Log(buildingBase.name);
-            //foreach (Transform baseWall in buildingBase)
-            //{
-            //    //Debug.Log(baseWall.name);
-            //    foreach (Transform brique in baseWall)
-            //    {
-            //Animator anim = brique.gameObject.GetComponent<Animator>();
-            ////Debug.Log(brique.name);
-            //string assetPath = "Assets/AnimationController_" + ID + "/" + "explosion_" + ID + "_" +
-            //    buildingBase.name + baseWall.name + brique.name + ".controller";
-            //AssetDatabase.FindAssets(assetPath);
-            //anim.runtimeAnimatorController = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(assetPath);
             Animator anim = brique.gameObject.GetComponent<Animator>();
             //Debug.Log(brique.name);
-            Motion clipReverse = ReverseClip("Assets/Animation_" + ID + "/" + "explosion_" + ID + "_" +
-                brique.name);
+
+            /*Motion clipReverse = ReverseClip("Assets/Animation_" + ID + "/" + "explosion_" + ID + "_" +
+                brique.name);*/
             string namePath = "Assets/AnimationController_" + ID + "/" + "explosion_" + ID + "_" +
                 brique.name;
             string assetPath = namePath + ".controller";
             AssetDatabase.FindAssets(assetPath);
             AnimatorController myController = AssetDatabase.LoadAssetAtPath<AnimatorController>(assetPath);
-            myController.AddMotion(clipReverse);
+            //myController.AddMotion(clipReverse);
             anim.runtimeAnimatorController = myController;
         }
         //    }
         //}
     }
+
+    public Motion ReverseClip()
+    {
+        if (clip == null)
+            return null;
+        float clipLength = clip.length;
+        EditorCurveBinding[] curveBindings = AnimationUtility.GetCurveBindings(clip);
+        EditorCurveBinding[] objectReferenceCurveBindings = AnimationUtility.GetObjectReferenceCurveBindings(clip);
+        clip.ClearCurves();
+        //foreach (EditorCurveBinding curveBinding in curveBindings)
+        //{
+        //    curveBinding.
+        //}
+        return null;
+    }/*
     private static Motion ReverseClip(string clipPath)
     {
         string copiedFilePath = clipPath + "_Reversed.anim";
@@ -93,5 +99,6 @@ public class AddAnimationController : MonoBehaviour
             return clips[0] as AnimationClip;
         }
         return null;
-    }
+    }*/
+#endif
 }

@@ -1,38 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
 public class Breakbackgroundscript : MonoBehaviour
 {
-    [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject pausePanel = default;
     
-    
-
-    public void restart()
+    public void Restart()
     {
         pausePanel.SetActive(false);
         SceneManager.LoadScene("Merge1");
         Time.timeScale = 1;
     }
 
-    public void quit()
+    public void Quit()
     {
         // Build to run only
         pausePanel.SetActive(false);
         SceneManager.LoadScene("MenuScene");
         Time.timeScale = 1;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
