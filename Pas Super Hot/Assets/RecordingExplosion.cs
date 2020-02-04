@@ -78,7 +78,12 @@ public class RecordingExplosion : MonoBehaviour
         AnimatorController controller = AnimatorController.CreateAnimatorControllerAtPath(
             "Assets/AnimationController_" + ID + "/" + "explosion_" + ID + "_" +
              gameObject.name + ".controller");
-        //controller.AddMotion(clip);
+        controller.AddParameter("Speed", AnimatorControllerParameterType.Float);
+        AnimatorStateMachine rootStateMachine = controller.layers[0].stateMachine;
+        var explosionState = rootStateMachine.AddState("Explode");
+        explosionState.speedParameterActive = true;
+        explosionState.speedParameter = "Speed";
+        explosionState.motion = clip;
         //controller.AddMotion(reverseClip);
         //Animator anim = gameObject.GetComponent<Animator>();
         //anim.runtimeAnimatorController = controller;

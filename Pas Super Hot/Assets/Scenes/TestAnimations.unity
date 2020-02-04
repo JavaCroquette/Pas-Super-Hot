@@ -176,17 +176,17 @@ PrefabInstance:
     - target: {fileID: 748581052102748742, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 13.883526
+      value: -26.43447
       objectReference: {fileID: 0}
     - target: {fileID: 748581052102748742, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 4.5869493
+      value: -22.834183
       objectReference: {fileID: 0}
     - target: {fileID: 748581052102748742, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -111.12201
+      value: 81.33621
       objectReference: {fileID: 0}
     - target: {fileID: 857961875467325554, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
@@ -227,6 +227,7 @@ GameObject:
   - component: {fileID: 119900549}
   - component: {fileID: 119900550}
   - component: {fileID: 119900551}
+  - component: {fileID: 119900552}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -285,6 +286,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &119900552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119900548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24539e38de2ece54191f9ed3ae8feb5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &373897867
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -340,17 +353,17 @@ PrefabInstance:
     - target: {fileID: 748581052102748742, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 34.135777
+      value: -10.433835
       objectReference: {fileID: 0}
     - target: {fileID: 748581052102748742, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 64.877014
+      value: -7.8477645
       objectReference: {fileID: 0}
     - target: {fileID: 748581052102748742, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 103.05801
+      value: 73.79351
       objectReference: {fileID: 0}
     - target: {fileID: 857961875467325554, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
@@ -527,17 +540,17 @@ PrefabInstance:
     - target: {fileID: 748581052102748742, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -61.86125
+      value: -45.119633
       objectReference: {fileID: 0}
     - target: {fileID: 748581052102748742, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 11.982695
+      value: -150.71646
       objectReference: {fileID: 0}
     - target: {fileID: 748581052102748742, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 7.679614
+      value: 167.59264
       objectReference: {fileID: 0}
     - target: {fileID: 857961875467325554, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
@@ -622,17 +635,17 @@ PrefabInstance:
     - target: {fileID: 748581052102748742, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 25.576231
+      value: -20.306793
       objectReference: {fileID: 0}
     - target: {fileID: 748581052102748742, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 8.865789
+      value: -145.32947
       objectReference: {fileID: 0}
     - target: {fileID: 748581052102748742, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 37.705162
+      value: 173.69841
       objectReference: {fileID: 0}
     - target: {fileID: 857961875467325554, guid: ebbb44fd143572c408c3746f8f2d1e76,
         type: 3}
