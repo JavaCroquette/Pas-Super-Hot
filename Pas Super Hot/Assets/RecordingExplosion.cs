@@ -1,33 +1,35 @@
 ﻿using UnityEngine;
+using System.IO;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Animations;
 #endif
 public class RecordingExplosion : MonoBehaviour
 {
-    private AnimationClip clip, reversedClip;
-    private GameObjectRecorder m_Recorder;
-
-    public string ID = "0";
+    [SerializeField]
+    private string ID = "0";
     [SerializeField]
     private float recordingFreq = 1f;
+
     private float timer = 1f;
+    private AnimationClip clip;
+    private GameObjectRecorder m_Recorder;
 
     void Start()
     {
         // Instanciate animationClips
         clip = new AnimationClip();
-        reversedClip = new AnimationClip();
+
         // Create animationClips by using parents' names 
         string familyName = name;
-        while (transform.parent)
+        Transform tmpTransform = transform;
+        while (tmpTransform.parent)
         {
-            familyName = transform.parent.name + familyName;
-            Debug.Log(familyName);
+            tmpTransform = tmpTransform.parent;
+            familyName = tmpTransform.name + familyName;
         }
+        CreateDirectories();
         AssetDatabase.CreateAsset(clip, "Assets/Animation_" + ID + "/" + "explosion_" + ID + "_" +
-            familyName + ".anim");
-        AssetDatabase.CreateAsset(reversedClip, "Assets/Animation_" + ID + "/" + "reversexplosion_" + ID + "_" +
             familyName + ".anim");
 
         // Create recorder and record the script GameObject.
@@ -38,6 +40,12 @@ public class RecordingExplosion : MonoBehaviour
         timer = recordingFreq;
         m_Recorder.TakeSnapshot(timer);
         timer = 0;
+    }
+
+    private void CreateDirectories()
+    {
+        System.IO.Directory.CreateDirectory("Assets/Animation_" + ID + "/");
+        System.IO.Directory.CreateDirectory("Assets/AnimationController_" + ID + "/");
     }
 
     void LateUpdate()
@@ -84,55 +92,5 @@ public class RecordingExplosion : MonoBehaviour
         explosionState.speedParameterActive = true;
         explosionState.speedParameter = "Speed";
         explosionState.motion = clip;
-        //controller.AddMotion(reverseClip);
-        //Animator anim = gameObject.GetComponent<Animator>();
-        //anim.runtimeAnimatorController = controller;
-        //anim.Rebind();
     }
-
-    //private static Motion ReverseClip(string clipPath)
-    //{
-    //    string copiedFilePath = clipPath + "_Reversed.anim";
-    //    var clip = GetSelectedClip();
-
-    //    AssetDatabase.CopyAsset(clipPath + ".anim", copiedFilePath);
-
-    //    clip = (AnimationClip)AssetDatabase.LoadAssetAtPath(copiedFilePath, typeof(AnimationClip));
-
-    //    if (clip == null)
-    //        return null;
-    //    float clipLength = clip.length;
-    //    var curves = AnimationUtility.GetAllCurves(clip, true);
-    //    clip.ClearCurves();
-    //    foreach (AnimationClipCurveData curve in curves)
-    //    {
-    //        var keys = curve.curve.keys;
-    //        int keyCount = keys.Length;
-    //        var postWrapmode = curve.curve.postWrapMode;
-    //        curve.curve.postWrapMode = curve.curve.preWrapMode;
-    //        curve.curve.preWrapMode = postWrapmode;
-    //        for (int i = 0; i < keyCount; i++)
-    //        {
-    //            Keyframe K = keys[i];
-    //            K.time = clipLength - K.time;
-    //            var tmp = -K.inTangent;
-    //            K.inTangent = -K.outTangent;
-    //            K.outTangent = tmp;
-    //            keys[i] = K;
-    //        }
-    //        curve.curve.keys = keys;
-    //        clip.SetCurve(curve.path, curve.type, curve.propertyName, curve.curve);
-    //    }
-    //    var events = AnimationUtility.GetAnimationEvents(clip);
-    //    if (events.Length > 0)
-    //    {
-    //        for (int i = 0; i < events.Length; i++)
-    //        {
-    //            events[i].time = clipLength - events[i].time;
-    //        }
-    //        AnimationUtility.SetAnimationEvents(clip, events);
-    //    }
-    //    Debug.Log("Animation reversed!");
-    //    return clip;
-    //}
 }

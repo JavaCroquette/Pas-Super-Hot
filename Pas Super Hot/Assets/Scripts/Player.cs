@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -13,11 +12,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float multiplierAnimMid = 0.04f;
     [SerializeField] private float multiplierAnimLow = 0.01f;
     [SerializeField] private Rigidbody rb = default;
-    [SerializeField] private Transform playerTransform = default;
-    [SerializeField] private Transform camTransform = default;
+    [SerializeField] private Transform playerTransform = default, camTransform = default;
     [SerializeField] private GameObject feet = default;
     [SerializeField] private LayerMask groundLayer = default;
-
     [SerializeField] private AudioSource jump1 = default, jump2 = default;
     public float rotationSpeed = 50f;
 

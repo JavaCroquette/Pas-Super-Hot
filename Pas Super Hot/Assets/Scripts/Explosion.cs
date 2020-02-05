@@ -26,7 +26,7 @@ public class Explosion : MonoBehaviour
             Rigidbody rb = hit.GetComponent<Rigidbody>();
 
             if (rb != null)
-                rb.AddExplosionForce(Random.Range(minPower, maxPower), explosionPos, radius, Random.Range(-3f, 3f));
+                rb.AddExplosionForce(Random.Range(minPower, maxPower), explosionPos, radius, Random.Range(-6f, 6f));
         }
     }
 
