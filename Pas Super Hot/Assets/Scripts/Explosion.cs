@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
+    #region Vars
     [SerializeField]
     private float minRadius = 1.0F;
     [SerializeField]
@@ -12,11 +11,11 @@ public class Explosion : MonoBehaviour
     private float minPower = 10.0F;
     [SerializeField]
     private float maxPower = 50.0F;
+    #endregion
 
-    // Start is called before the first frame update
+    #region BuildIn
     void Start()
     {
-
         Vector3 explosionPos = transform.position;
         float radius = Random.Range(minRadius, maxRadius);
         Collider[] colliders = Physics.OverlapSphere(explosionPos, radius);
@@ -29,10 +28,6 @@ public class Explosion : MonoBehaviour
                 rb.AddExplosionForce(Random.Range(minPower, maxPower), explosionPos, radius, Random.Range(-6f, 6f));
         }
     }
+    #endregion
 
-    // Update is called once per frame
-    void Update()
-    {
-        //if ()
-    }
 }
