@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rampe
+  m_Name: PlatformMat2
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -73,5 +73,5 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.53631186, g: 0.8679245, b: 0.8449939, a: 1}
+    - _Color: {r: 0.75, g: 1, b: 0.98214287, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
