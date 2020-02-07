@@ -12334,7 +12334,7 @@ GameObject:
   - component: {fileID: 5036670258225434623}
   - component: {fileID: 5036670258225434616}
   m_Layer: 0
-  m_Name: Parking_01
+  m_Name: Parking_02_Animated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12619,11 +12619,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3946338531424914763}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfb29ea5429f7324bbc05f0c869569cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 767cfbd0396c08348b9400c99b092182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: ParkingBis
-  recordingFreq: 0.1
+  ID: 0
+  recordingFreq: 1
 --- !u!114 &5036670258225434616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12636,6 +12636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24539e38de2ece54191f9ed3ae8feb5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!1 &3950988622647096689
 GameObject:
   m_ObjectHideFlags: 0

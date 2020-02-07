@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioSource jump1 = default, jump2 = default;
     public float rotationSpeed = 50f;
 
-    private float multiplierAnim = 0f;
+    public float multiplierAnim = 0f;
     private Vector3 gravityDir = Vector3.down;
     private Vector3 forwardCam = Vector3.zero;
     [SerializeField] private bool isGrounded = true;
@@ -31,17 +31,17 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        GameObject[] platforms = GameObject.FindGameObjectsWithTag("Platform");
-        Debug.Log(platforms.Length);
-        animators = new Animator[platforms.Length - 5];//-4 is for 4 walls
-        int i = 0;
-        foreach (GameObject platform in platforms)
-        {
-            if (i >= platforms.Length - 5) break;
-            bool isAnim = platform.TryGetComponent<Animator>(out animators[i]);
-            Debug.Log("isAnim = " + isAnim + (isAnim ? "" : " name" + platform.name));
-            if (isAnim) i++;
-        }
+        //GameObject[] platforms = GameObject.FindGameObjectsWithTag("Platform");
+        //Debug.Log(platforms.Length);
+        //animators = new Animator[platforms.Length - 5];//-4 is for 4 walls
+        //int i = 0;
+        //foreach (GameObject platform in platforms)
+        //{
+        //    if (i >= platforms.Length - 5) break;
+        //    bool isAnim = platform.TryGetComponent<Animator>(out animators[i]);
+        //    //Debug.Log("isAnim = " + isAnim + (isAnim ? "" : " name" + platform.name));
+        //    if (isAnim) i++;
+        //}
 
         if (rb == default)
             rb = GetComponent<Rigidbody>();
@@ -100,26 +100,26 @@ public class Player : MonoBehaviour
         if (isDashing && multiplierAnim != multiplierAnimHigh)
         {
             multiplierAnim = multiplierAnimHigh;
-            foreach (Animator anim in animators)
-            {
-                anim.speed = multiplierAnim;
-            }
+            //foreach (Animator anim in animators)
+            //{
+            //    anim.speed = multiplierAnim;
+            //}
         }
         else if (!isDashing && !isMoving && multiplierAnim != multiplierAnimLow)
         {
             multiplierAnim = multiplierAnimLow;
-            foreach (Animator anim in animators)
-            {
-                anim.speed = multiplierAnim;
-            }
+            //foreach (Animator anim in animators)
+            //{
+            //    anim.speed = multiplierAnim;
+            //}
         }
         else if ((isMoving || !isGrounded) && multiplierAnim != multiplierAnimMid)
         {
             multiplierAnim = multiplierAnimMid;
-            foreach (Animator anim in animators)
-            {
-                anim.speed = multiplierAnim;
-            }
+            //foreach (Animator anim in animators)
+            //{
+            //    anim.speed = multiplierAnim;
+            //}
         }
     }
 
